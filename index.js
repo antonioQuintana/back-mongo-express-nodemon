@@ -1,3 +1,13 @@
+const app = require("./src/server.js"); //importa el servidor
+
+require("dotenv").config({ quiet: true }); //importa el .env
+
+const port = process.env.PORT || 3001; // Trae el puerto del archivo .env
+
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost: ${port}`);
+});
+
 /* const http = require('http');
 
 const PORT = 3000;
@@ -11,14 +21,3 @@ server.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
  */ //esto seria sin express
-
-//con express
-const app = require("./src/server.js"); //importa el servidor
-
-require("dotenv").config({ quiet: true }); //importa el .env
-
-const port = process.env.PORT || 3001; // Trae el puerto del archivo .env
-
-app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost: ${port}`);
-});
