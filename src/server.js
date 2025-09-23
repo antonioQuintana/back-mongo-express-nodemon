@@ -1,17 +1,35 @@
 const express = require("express");
-const morgan = require("morgan");
-
 const app = express();
 
-app.use(morgan("dev"));
+//Usuarios
+app.get("/api/users", (req, res) => {
+  res.send("Traer los usuarios");
+});
+app.get("/api/users/:id", (req, res) => {
+  res.send("Traer un usuario por ID");
+});
+app.post("/api/users", (req, res) => {
+  res.send("Usuario creado");
+});
+app.put("/api/users/:id", (req, res) => {
+  res.send("Usuario modificado");
+});
+app.delete("/api/users/:id", (req, res) => {
+  res.send("Usuario eliminado");
+});
 
-app.use((req, res, next) => {
+//Productos
+app.get("/api/products", (req, res) => {
+  res.send("Traer los productos");
+});
+
+/*
+  const morgan = require("morgan");
+  app.use(morgan("dev"));
+
+  app.use((req, res, next) => {
   console.log("Pasando por mi middleware");
   next();
-}); //se crea un middleware propio
-
-app.get("/", (req, res) => {
-  res.send("Servidor funcionando correctamente");
-});
+}); //se crea un middleware propio  */
 
 module.exports = app;
