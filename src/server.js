@@ -1,27 +1,10 @@
 const express = require("express");
+//importamos la ruta principal
+const mainRoute = require("./Routes/mainRoute");
+
 const app = express();
 
-//Usuarios
-app.get("/api/users", (req, res) => {
-  res.send("Traer los usuarios");
-});
-app.get("/api/users/:id", (req, res) => {
-  res.send("Traer un usuario por ID");
-});
-app.post("/api/users", (req, res) => {
-  res.send("Usuario creado");
-});
-app.put("/api/users/:id", (req, res) => {
-  res.send("Usuario modificado");
-});
-app.delete("/api/users/:id", (req, res) => {
-  res.send("Usuario eliminado");
-});
-
-//Productos
-app.get("/api/products", (req, res) => {
-  res.send("Traer los productos");
-});
+app.use(mainRoute);
 
 /*
   const morgan = require("morgan");

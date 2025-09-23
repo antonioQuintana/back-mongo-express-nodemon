@@ -1,4 +1,4 @@
-const app = require("./src/server.js"); //importa el servidor
+const app = require("./src/server"); //importa el servidor
 
 require("dotenv").config({ quiet: true }); //importa el .env
 
