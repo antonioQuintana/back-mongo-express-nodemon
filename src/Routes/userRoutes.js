@@ -1,23 +1,24 @@
 const { Router } = require("express");
 
 const userRoutes = Router();
+const {
+  getAllUsersHandler,
+  getOneUserHandler,
+  createUserHandler,
+  updateUserHandler,
+  deleteUserHandler,
+} = require("../handlers/userHandlers");
 
 //Usuarios
-userRoutes.get("/", (req, res) => {
-  res.send("Traer los usuarios");
-});
-userRoutes.get("/:id", (req, res) => {
-  res.send("Traer un usuario por ID");
-});
-userRoutes.post("/", (req, res) => {
-  res.send("Usuario creado");
-});
-userRoutes.put("/:id", (req, res) => {
-  res.send("Usuario modificado");
-});
-userRoutes.delete("/:id", (req, res) => {
-  res.send("Usuario eliminado");
-});
+userRoutes.get("/", getAllUsersHandler);
+
+userRoutes.get("/:id", getOneUserHandler);
+
+userRoutes.post("/", createUserHandler);
+
+userRoutes.put("/:id", updateUserHandler);
+
+userRoutes.delete("/:id", deleteUserHandler);
 
 //Exportamos la ruta de usuarios
 module.exports = userRoutes;

@@ -3,7 +3,9 @@ const express = require("express");
 const mainRoute = require("./Routes/mainRoute");
 
 const app = express();
-
+//Middleware para que el servidor entienda JSON
+app.use(express.json());
+//Usamos la ruta principal
 app.use(mainRoute);
 
 /*
