@@ -13,14 +13,11 @@ server.listen(PORT, () => {
  */ //esto seria sin express
 
 //con express
-const express = require("express");
-require("dotenv").config(); //importa el .env
-const app = express();
-const port = process.env.PORT || 3001; // Trae el puerto del archivo .env
+const app = require("./src/server.js"); //importa el servidor
 
-app.get("/", (req, res) => {
-  res.send("Servidor funcionando correctamente");
-});
+require("dotenv").config({ quiet: true }); //importa el .env
+
+const port = process.env.PORT || 3001; // Trae el puerto del archivo .env
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost: ${port}`);
