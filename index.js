@@ -1,0 +1,27 @@
+/* const http = require('http');
+
+const PORT = 3000;
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Servidor funcionando correctamente 🚀');
+});
+
+server.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+});
+ */ //esto seria sin express
+
+//con express
+const express = require("express");
+require("dotenv").config(); //importa el .env
+const app = express();
+const port = process.env.PORT || 3001; // Trae el puerto del archivo .env
+
+app.get("/", (req, res) => {
+  res.send("Servidor funcionando correctamente");
+});
+
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost: ${port}`);
+});
