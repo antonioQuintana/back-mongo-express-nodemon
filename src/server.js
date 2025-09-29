@@ -6,7 +6,7 @@ const app = express();
 //Middleware para que el servidor entienda JSON
 app.use(express.json());
 //Usamos la ruta principal
-app.use(mainRoute);
+app.use("/api", mainRoute);
 
 /*
   const morgan = require("morgan");
