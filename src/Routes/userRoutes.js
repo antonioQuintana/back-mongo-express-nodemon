@@ -8,9 +8,11 @@ const {
   updateUserHandler,
   deleteUserHandler,
 } = require("../handlers/userHandlers");
+const verifyToken = require("../middleware/verifyToken");
+const authorizationAdmin = require("../middleware/authorizeMiddleware");
 
 //Usuarios
-userRoutes.get("/", getAllUsersHandler);
+userRoutes.get("/", verifyToken, authorizationAdmin, getAllUsersHandler);
 
 userRoutes.get("/:id", getOneUserHandler);
 

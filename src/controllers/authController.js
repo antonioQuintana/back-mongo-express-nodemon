@@ -1,5 +1,6 @@
 const users = require("../db/database");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
 
 const registerController = async (name, username, email, password, role) => {
   const userExist = users.some((user) => user.email === email); //some devuelve true o false
@@ -9,7 +10,6 @@ const registerController = async (name, username, email, password, role) => {
 
   const id = users.length + 1; //tamaño del array de users + 1
   const hashPassword = await bcrypt.hash(password, 10);
-  console.log(hashPassword);
   const newUser = { id, name, username, email, password: hashPassword, role };
   if (!name || !username || !email || !password) {
     throw new Error("Faltan datos obligatorios");
@@ -17,6 +17,7 @@ const registerController = async (name, username, email, password, role) => {
   users.push(newUser);
   return newUser;
 };
+
 const loginController = async (email, password) => {
   const user = users.find((user) => user.email === email);
   if (!user) {
@@ -26,8 +27,13 @@ const loginController = async (email, password) => {
   if (!passMatch) {
     throw new Error("Contraseña incorrecta");
   }
+  const token = jwt.sign({ id: user.id, role: user.role }, "secretKey", {
+    expiresIn: "1h",
+  });
+  // Elimina la propiedad password del objeto user
+  const { password: _, ...userWithoutPassword } = user;
   // Devuelve el usuario o un mensaje de éxito
-  return { message: "Login exitoso", user };
+  return { message: "Login exitoso", token, user: userWithoutPassword };
 };
 
 module.exports = { registerController, loginController };
