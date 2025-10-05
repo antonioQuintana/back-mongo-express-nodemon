@@ -1,3 +1,8 @@
-const users = [];
+const mongoose = require("mongoose");
 
-module.exports = users;
+const mongoUrl =
+  "mongodb+srv://antony_DB:antony_PassDB@clustertest.ourtrww.mongodb.net/";
+
+mongoose.connect(mongoUrl);
+
+module.exports = mongoose;

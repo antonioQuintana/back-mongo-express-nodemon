@@ -1,8 +1,11 @@
-const users = require("../db/database");
+const mongoose = require("mongoose");
+
+//const users = require("../db/database"); no se usa mas
+const User = require("../models/User"); //importamos el modelo de usuario
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
-const registerController = async (name, username, email, password, role) => {
+/* const registerController = async (name, username, email, password, role) => {
   const userExist = users.some((user) => user.email === email); //some devuelve true o false
   if (userExist) {
     throw new Error("El usuario ya existe");
@@ -16,10 +19,24 @@ const registerController = async (name, username, email, password, role) => {
   }
   users.push(newUser);
   return newUser;
+}; */
+const registerController = async (name, username, email, password, role) => {
+  const hashPassword = await bcrypt.hash(password, 10);
+  const newUser = new User({
+    name,
+    username,
+    email,
+    password: hashPassword,
+    role,
+  });
+
+  await newUser.save();
+  return newUser;
 };
 
 const loginController = async (email, password) => {
-  const user = users.find((user) => user.email === email);
+  //const user = users.find((user) => user.email === email);
+  const user = await User.findOne({ email }); // lean() para obtener un objeto JS simple en lugar de un documento Mongoose
   if (!user) {
     throw new Error("Usuario no encontrado");
   }

@@ -1,12 +1,23 @@
 const app = require("./src/server"); //importa el servidor
+const mongoose = require("mongoose"); //importamos la conexión a la base de datos
 
 require("dotenv").config({ quiet: true }); //importa el .env
 
 const port = process.env.PORT || 3001; // Trae el puerto del archivo .env
 
-app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost: ${port}`);
-});
+async function main() {
+  try {
+    await mongoose.connection;
+    app.listen(port, console.log("listening on port", port));
+
+    app.listen(port, () => {
+      console.log(`Servidor escuchando en http://localhost: ${port}`);
+    });
+  } catch (error) {
+    console.error("Error al conectar con la base de datos:", error);
+  }
+}
+main();
 
 /* const http = require('http');
 

@@ -1,16 +1,18 @@
 //Controllers de usuarios
-const users = require("../db/database");
+
+const User = require("../models/User"); //importamos el modelo de usuario
 const bcrypt = require("bcrypt");
 
 const createUserController = async (name, username, email, password, role) => {
-  const id = users.length + 1; //tamaño del array de users + 1
   const hashPassword = await bcrypt.hash(password, 10);
-  console.log(hashPassword);
-  const newUser = { id, name, username, email, password: hashPassword, role };
-  if (!name || !username || !email || !password) {
-    throw new Error("Faltan datos obligatorios");
-  }
-  users.push(newUser);
+  const newUser = await new User({
+    name,
+    username,
+    email,
+    password: hashPassword,
+    role,
+  });
+  await newUser.save();
   return newUser;
 };
 
