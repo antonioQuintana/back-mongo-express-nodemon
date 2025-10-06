@@ -16,43 +16,40 @@ const createUserController = async (name, username, email, password, role) => {
   return newUser;
 };
 
-const getAllUsersController = () => {
-  return users;
+const getAllUsersController = async () => {
+  if (!User.length) {
+    throw new Error("No hay usuarios registrados");
+  }
+  return await User.find();
 };
-const getUserByNameController = (name) => {
-  const userByName = users.filter(
-    (user) => user.name.toLowerCase() === name.toLowerCase()
-  );
+const getUserByNameController = async (name) => {
+  const userByName = await User.find({ name });
   if (!userByName.length) {
     throw new Error("Usuario no encontrado");
   }
   return userByName;
 };
-const getOneUserById = (id) => {
-  const userById = users.find((user) => user.id === id);
+const getOneUserById = async (id) => {
+  console.log(id);
+  const userById = await User.findById(id);
+  console.log(userById);
   if (!userById) {
     throw new Error("Usuario no encontrado");
   }
   return userById;
 };
 
-const updateUserController = (id, name, username, email) => {
+const updateUserController = async (id, name, username, email) => {
   const newUser = { name, username, email };
-  const userById = users.find((user) => user.id === id);
-  if (userById) {
-    /* userById.name = newUser.name;
-        userById.username = newUser.username;
-        userById.email = newUser.email; */
-    Object.assign(userById, newUser);
-    return userById;
-  }
-  throw new Error("Usuario no encontrado");
+  const userById = await User.findByIdAndUpdate(id, newUser, { new: true });
+
+  return userById;
 };
 const deleteUserController = (id) => {
-  const index = users.findIndex((user) => user.id === id);
+  const index = User.findIndex((user) => user.id === id);
   let deleteUser = null;
   if (index !== -1) {
-    [deleteUser] = users.splice(index, 1); //¿por qué corchetes? porque es un arreglo??
+    [deleteUser] = User.splice(index, 1); //¿por qué corchetes? porque es un arreglo??
     return deleteUser;
   }
   return null;

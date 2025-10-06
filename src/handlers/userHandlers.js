@@ -23,27 +23,28 @@ const userSchema = Joi.object({
   role: Joi.string().valid("user", "admin").default("user"),
 });
 
-const getAllUsersHandler = (req, res) => {
+const getAllUsersHandler = async (req, res) => {
   const { name } = req.query;
   if (name) {
-    const response = getUserByNameController(name);
+    const response = await getUserByNameController(name);
     if (!response) {
       return res.status(404).send("Usuario no encontrado");
     }
     return res.status(200).send(response);
   } else {
-    const response = getAllUsersController();
+    const response = await getAllUsersController();
     return res.status(200).send(response);
   }
 };
 
-const getOneUserHandler = (req, res) => {
-  const { id } = req.params;
-  const response = getOneUserById(Number(id));
-  if (!response) {
+const getOneUserHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await getOneUserById(id);
+    return res.status(200).send(response);
+  } catch (error) {
     return res.status(404).send("Usuario no encontrado");
   }
-  return res.status(200).send(response);
 };
 
 const createUserHandler = async (req, res) => {
@@ -66,16 +67,16 @@ const createUserHandler = async (req, res) => {
   }
 };
 
-const updateUserHandler = (req, res) => {
+const updateUserHandler = async (req, res) => {
   const { id } = req.params;
   const { name, username, email } = req.body;
-  const response = updateUserController(Number(id), name, username, email);
+  const response = await updateUserController(id, name, username, email);
   if (!response) {
     return res.status(404).send("Usuario no encontrado");
   }
   return res.status(200).send(response);
 };
-const deleteUserHandler = (req, res) => {
+const deleteUserHandler = async (req, res) => {
   const { id } = req.params;
   const response = deleteUserController(Number(id));
   if (!response) {

@@ -1,3 +1,4 @@
+const User = require("../models/User");
 const Joi = require("joi");
 const userSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
@@ -20,6 +21,10 @@ const {
 } = require("../controllers/authController");
 
 const registerHandler = async (req, res) => {
+  const userExists = await User.findOne({ email: req.body.email });
+  if (userExists) {
+    return res.status(400).send({ error: "El usuario ya existe" });
+  }
   try {
     const { error } = userSchema.validate(req.body);
     if (error) {
