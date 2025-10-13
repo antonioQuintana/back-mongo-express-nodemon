@@ -1,6 +1,7 @@
 //Controladores de Productos
 const Product = require("../models/Products"); //importamos el modelo de producto
 const mongoose = require("mongoose");
+
 const createProductController = async (name, description, price) => {
   const newProduct = await new Product({ name, description, price });
   await newProduct.save();
