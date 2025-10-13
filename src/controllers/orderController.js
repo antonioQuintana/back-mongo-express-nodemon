@@ -5,24 +5,27 @@ const mongoose = require("mongoose"); //usar para validar id de objetos
 
 // Crear orden
 const createOrderController = async ({
-  userID,
+  userId,
   products,
   totalAmount,
   status,
 }) => {
   const newOrder = new Order({
-    userID,
+    userId,
     products,
     totalAmount,
     status,
     orderDate: new Date(),
   });
+
   return await newOrder.save();
 };
 
 // Actualizar orden
 const updateOrderController = async (id, data) => {
-  const updatedOrder = await Order.findByIdAndUpdate(id, data, { new: true });
+  const updatedOrder = await Order.findByIdAndUpdate(id, data, {
+    new: true,
+  });
   if (!updatedOrder) throw new Error("Orden no encontrada");
   return updatedOrder;
 };
@@ -36,15 +39,14 @@ const deleteOrderController = async (id) => {
 
 // Obtener todas las órdenes
 const getAllOrdersController = async () => {
-  return await Order.find().populate("userID").populate("products.productID");
+  return await Order.find().populate("userId");
 };
 
-// Obtener orden por ID
-const getOrderByIdController = async (id) => {
-  const order = await Order.findById(id)
-    .populate("userID")
-    .populate("products.productID");
-  if (!order) throw new Error("Orden no encontrada");
+// Obtener orden por ID de usuario
+const getOrderByIdController = async (userId) => {
+  const order = await Order.find({ userId }).populate("userId", "name email"); //trae solamente name y email
+
+  if (!order) throw new Error("El usuario no ha realizado ninguna orden");
   return order;
 };
 

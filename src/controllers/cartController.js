@@ -1,9 +1,10 @@
 const Cart = require("../models/Cart");
 
 // Crear carrito
-const createCartController = async ({ userID, products, totalAmount }) => {
+const createCartController = async ({ userId, products, totalAmount }) => {
+  console.log(userId);
   const newCart = new Cart({
-    userID,
+    userId,
     products,
     totalAmount,
     createdAt: new Date(),
@@ -27,14 +28,12 @@ const deleteCartController = async (id) => {
 
 // Obtener todos los carritos
 const getAllCartsController = async () => {
-  return await Cart.find().populate("userID").populate("products.productID");
+  return await Cart.find().populate("userId");
 };
 
 // Obtener carrito por ID
 const getCartByIdController = async (id) => {
-  const cart = await Cart.findById(id)
-    .populate("userID")
-    .populate("products.productID");
+  const cart = await Cart.findById(id).populate("userId");
   if (!cart) throw new Error("Carrito no encontrado");
   return cart;
 };

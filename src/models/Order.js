@@ -16,6 +16,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
           },
           quantity: { type: Number, required: true, min: 1 },
+          _id: false, //para que mongoose no cree una id para cada subdocumento
         },
       ],
       required: true,

@@ -8,11 +8,11 @@ const {
 } = require("../controllers/orderController");
 
 const orderSchema = Joi.object({
-  userID: Joi.string().hex().length(24).required(),
+  userId: Joi.string().hex().length(24).required(),
   products: Joi.array()
     .items(
       Joi.object({
-        productID: Joi.string().hex().length(24).required(),
+        productId: Joi.string().hex().length(24).required(),
         quantity: Joi.number().integer().min(1).required(),
       })
     )
@@ -26,7 +26,7 @@ const orderSchema = Joi.object({
 const createOrderHandler = async (req, res) => {
   const { error, value } = orderSchema.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
-
+  console.log(value);
   try {
     const result = await createOrderController(value);
     res.status(201).json(result);
