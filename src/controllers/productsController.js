@@ -2,8 +2,8 @@
 const Product = require("../models/Products"); //importamos el modelo de producto
 const mongoose = require("mongoose");
 
-const createProductController = async (name, description, price) => {
-  const newProduct = await new Product({ name, description, price });
+const createProductController = async (name, description, price, stock, category, imgDir) => {
+  const newProduct = await new Product({ name, description, price, stock, category, imgDir });
   await newProduct.save();
   return newProduct;
 };
@@ -34,8 +34,8 @@ const getOneProductById = async (id) => {
   }
   return productById;
 };
-const updateProductController = async (id, name, description, price) => {
-  const newProduct = { name, description, price };
+const updateProductController = async (id, name, description, price, stock, category, imgDir) => {
+  const newProduct = { name, description, price, stock, category, imgDir };
   const productById = await Product.findByIdAndUpdate(id, newProduct, {
     new: true,
   });

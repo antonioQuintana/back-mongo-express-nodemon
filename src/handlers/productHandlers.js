@@ -12,6 +12,9 @@ const productSchema = Joi.object({
   name: Joi.string().min(4).max(30).required(),
   description: Joi.string().min(10).max(200).required(),
   price: Joi.number().positive().required(),
+  stock: Joi.number().positive().required(),
+  category: Joi.string().required(),
+  imgDir: Joi.string().required(),
 });
 
 const getAllProductsHandler = async (req, res) => {
@@ -44,8 +47,8 @@ const createProductHandler = async (req, res) => {
     if (error) {
       return res.status(400).send({ error: error.details[0].message });
     }
-    const { name, description, price } = req.body;
-    const response = await createProductController(name, description, price);
+    const { name, description, price, stock, category, imgDir } = req.body;
+    const response = await createProductController(name, description, price, stock, category, imgDir);
     res.status(201).send(response);
   } catch (error) {
     res.status(400).send({ error: error.message });
@@ -54,13 +57,16 @@ const createProductHandler = async (req, res) => {
 
 const updateProductHandler = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price } = req.body;
+  const { name, description, price, stock, category, imgDir } = req.body;
   try {
     const response = await updateProductController(
       id,
       name,
       description,
-      price
+      price,
+      stock,
+      category,
+      imgDir
     );
     if (!response) {
       return res.status(404).send("Producto no encontrado");
