@@ -42,6 +42,16 @@ const updateProductController = async (id, name, description, price, stock, cate
 
   return productById;
 };
+const updateProductStockController = async (id, compra) => {
+  const productById = await Product.findById(id);
+  const stock = productById.stock;
+  const newStock = stock - compra;
+  if (newStock < 0) {
+    throw new Error("No hay stock disponible");
+  }
+  const productUpdated = await Product.findByIdAndUpdate(id, { stock: newStock }, { new: true });
+  return productUpdated;
+};//new: true devuleve la nueva version del doc
 const deleteProductController = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new Error("ID inválido");
@@ -56,4 +66,5 @@ module.exports = {
   getOneProductById,
   updateProductController,
   deleteProductController,
+  updateProductStockController
 };

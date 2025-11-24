@@ -5,7 +5,9 @@ const {
   deleteOrderController,
   getAllOrdersController,
   getOrderByIdController,
+
 } = require("../controllers/orderController");
+const { updateProductStockController } = require("../controllers/productsController");
 
 const orderSchema = Joi.object({
   userId: Joi.string().hex().length(24).required(),
@@ -29,12 +31,21 @@ const createOrderHandler = async (req, res) => {
   console.log(value);
   try {
     const result = await createOrderController(value);
+    await actualizarStock(value.products);
     res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
+const actualizarStock = async (products) => {
+  try {
+    for (const product of products) {
+      await updateProductStockController(product.productId, product.quantity);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 // Actualizar orden
 const updateOrderHandler = async (req, res) => {
   try {

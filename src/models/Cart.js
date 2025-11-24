@@ -11,7 +11,7 @@ const cartSchema = new mongoose.Schema({
           required: true,
         },
         quantity: { type: Number, required: true, min: 1 },
-        _id: false,
+        _id: false, //para que mongo no cree un id por cada linea del array
       },
     ],
     required: true,
